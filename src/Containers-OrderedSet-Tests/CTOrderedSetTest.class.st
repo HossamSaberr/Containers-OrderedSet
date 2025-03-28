@@ -180,6 +180,16 @@ CTOrderedSetTest >> testAllSubsets [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #'performance tests' }
+CTOrderedSetTest >> testAllSubsetsPerformance [
+	| set time |
+	set := CTOrderedSet withAll: (1 to: 10) asArray. "Set of size 10"
+	
+	time := [ set allSubsets ] timeToRun.
+	self assert: set allSubsets size equals: (1 bitShift: 10) - 2. "1022 subsets"
+	self assert: time < 1 second description: 'Should complete within 1 second for size 10'.
+]
+
 { #category : #'ordered collection tests' }
 CTOrderedSetTest >> testAt [
 	| set expected actual |
