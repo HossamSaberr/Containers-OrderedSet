@@ -37,13 +37,22 @@ CTOrderedSet >> allLargestSubsets [
 
 { #category : #'as yet unclassified' }
 CTOrderedSet >> allSubsets [
-	"Generate all possible subsets of this self without self and an empty set.
-	Example:
-	{1, 2, 3} => {1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}"
+	"Generate all possible subsets of the receiver, excluding the receiver itself and the empty set.
+	Uses a bitmask approach for efficiency.
+	Example: #(a b c) => #(a), #(b), #(c), #(a b), #(a c), #(b c)"
 	
-	"This implementation might not be very fast and has to be improved"
-	^ (self combinations copyWithout: self asArray) collect: [ :eachArray |
-		self species withAll: eachArray ]
+	| subsets size |
+	size := self size.
+	subsets := OrderedCollection new: (1 bitShift: size) - 2. "Reserve space for 2^n - 2 subsets"
+	
+	1 to: (1 bitShift: size) - 2 do: [ :mask |
+		| subset |
+		subset := self species new.
+		1 to: size do: [ :index |
+			(mask bitAt: index) = 1 ifTrue: [ subset addLast: (self at: index) ] ].
+		subsets add: subset ].
+	
+	^ subsets asArray
 ]
 
 { #category : #accessing }
