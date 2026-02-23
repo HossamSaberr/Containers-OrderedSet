@@ -1,9 +1,6 @@
 Class {
 	#name : 'CTOrderedSet',
 	#superclass : 'OrderedCollection',
-	#instVars : [
-		'duplicatesSkipped'
-	],
 	#category : 'Containers-OrderedSet',
 	#package : 'Containers-OrderedSet'
 }
@@ -30,8 +27,6 @@ CTOrderedSet >> addLast: newObject [
 	(self includes: newObject)
 		ifFalse: [ ^ super addLast: newObject].
 	
-	"If we reach this line, it was a duplicate!"
-	duplicatesSkipped := duplicatesSkipped + 1.
 	^ newObject
 ]
 
@@ -88,7 +83,6 @@ CTOrderedSet >> difference: aCollection [
 { #category : 'initialization' }
 CTOrderedSet >> initialize [
 	super initialize.
-	duplicatesSkipped := 0.
 ]
 
 { #category : 'inspecting' }
@@ -100,7 +94,6 @@ CTOrderedSet >> inspectionStats: aBuilder [
 		addColumn: (SpStringTableColumn title: 'Value' evaluated: [ :assoc | assoc value asString ]);
 		items: { 
 			'Size (Unique Elements)' -> self size.
-			'Duplicates Skipped' -> duplicatesSkipped.
 			'Internal Capacity' -> self capacity.
 		};
 		yourself
