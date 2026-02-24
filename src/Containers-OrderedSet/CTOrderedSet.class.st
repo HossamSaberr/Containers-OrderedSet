@@ -80,14 +80,9 @@ CTOrderedSet >> difference: aCollection [
 	^ self reject: [ :each | aCollection includes: each ]
 ]
 
-{ #category : 'initialization' }
-CTOrderedSet >> initialize [
-	super initialize.
-]
-
 { #category : 'inspecting' }
 CTOrderedSet >> inspectionStats: aBuilder [
-	<inspectorPresentationOrder: -1 title: 'Stats'> 
+	<inspectorPresentationOrder: 0 title: 'Stats'> 
 	
 	^ aBuilder newTable
 		addColumn: (SpStringTableColumn title: 'Metric' evaluated: #key);
